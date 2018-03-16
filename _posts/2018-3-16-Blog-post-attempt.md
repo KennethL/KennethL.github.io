@@ -18,3 +18,7 @@ An Erlang example:
 foo(A, B) when is_atom(A) ->
   {atom_to_list(A),B}.
 ```
+
+## ToDo List
+- [x] Test to make a Blog Post
+- [ ] Write a real interesting Blog Post
