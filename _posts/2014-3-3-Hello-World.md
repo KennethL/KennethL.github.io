@@ -1,6 +1,7 @@
 ---
 layout: post
 title: The first Blog post
+author: Kenneth Lundin
 ---
 
 I am just testing how it works to write a blog post.
