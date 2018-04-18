@@ -7,7 +7,7 @@ layout: default
     <article class="post">
 
       <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
-
+      <div class="date">{{ post.date | date: "%B %d, %Y" }}{% if post.author %} · by {{ post.author}}{% endif %} .</div>
       <div class="entry">
         {{ post.excerpt }}
       </div>
@@ -16,3 +16,4 @@ layout: default
     </article>
   {% endfor %}
 </div>
+
