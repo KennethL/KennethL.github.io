@@ -37,7 +37,6 @@ In the current map matching syntax, the key in a map pattern must be a single va
 With OTP 23 the keys in map matching can be guard expressions as you see in example2.​
 
 The only limitation is that all variables used in a key expression must be previously bound. ​
-
 ```erlang​
 example2(M, X) -> ​
     Key = {tag,X},​
@@ -48,7 +47,6 @@ Below there is an illegal example showing that it is still not supported to use 
 ```erlang ​
 illegal_example(Key, #{Key := Value}) -> Value.​
 ```
-
 
 ## Numeric literals with underscore​
 It is now allowed to write numeric literals with underscore between the digits for the purpose of readability. But the placement of the underscores is not totally free there are som rules. See example of allowed use below:
@@ -62,6 +60,7 @@ It is now allowed to write numeric literals with underscore between the digits f
 2#1100_1010_0011​
 ```
 And in the following example we have some examples of dissalowed placement of the underscore:
+
 ```
 _123  % variable name​
 123_​
@@ -96,8 +95,6 @@ The idea behind this API is to have a stable intermediary API that users can use
 to create features that are not part of the higher-level gen APIs. We have now come one step further in our plan to replace the inet driver by making it possible to use the gen_tcp API with socket as an optional backend.
 ```
 MORE TO WRITE
-
-
 
 ```
 # Help in the shell
