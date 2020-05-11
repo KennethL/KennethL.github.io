@@ -98,15 +98,15 @@ MORE TO WRITE
 
 ```
 # Help in the shell
-- We have implemented EEP 48. EEP 48 proposes an official API documentation storage to be used by BEAM languages. By standardizing how API documentation is stored, it will be possible to write tools that work across languages.
+- We have implemented EEP 48 which specifies a storage format for API documentation to be used by BEAM languages. By standardizing how API documentation is stored, it will be possible to write tools that work across languages.
 
-- We’ve extended the ordinary doc build with the generation .chunk files for all OTP modules. You can run `make docs DOC_TARGETS=chunks` to build only the EEP 48 chunks. Running just `make docs` without setting the DOC_TARGETS variable will build all formats (html, man, pdf, chunks).
+- We’ve extended the ordinary doc build with the generation of `.chunk` files for all OTP modules. You can run `make docs DOC_TARGETS=chunks` to build only the EEP 48 chunks. Running just `make docs` without setting the DOC_TARGETS variable will build all formats (html, man, pdf, chunks).
 
 - Built on these new features we’ve added on-line help in the shell.
 
-- We’ve added a new module shell_docs with functions for rendering documentation for a shell. This can be used for instance by LSP implementations.
+- We’ve added a new module `shell_docs` with functions for rendering documentation for a shell. This can be used for instance by Development Environments such as those based on the Language Server Protocol (LSP).
 
-- The code module also got a new function, get_doc which returns the doc chunk without loading the module.
+- The `code` module also got a new function, `get_doc` which returns the doc chunk without loading the module.
 
 EEP 48: Documentation storage and format
 
