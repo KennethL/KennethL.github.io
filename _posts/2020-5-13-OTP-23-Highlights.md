@@ -135,7 +135,7 @@ New function code:get_doc(Module) which returns the doc chunk without loading th
 ok
 ```
 ## Improved tab-completion
-The tab-completion in the shell is also improved. Previously the tab-completion for modules did only work for already loaded modules now this is extended to work for all modules available in the code path. The completion is also extended to work inside the "help" functions h, ht and hc. You can for example press tab like the example below and get all modules beginning with `l`:
+The tab-completion in the shell is also improved. Previously the tab-completion for modules did only work for already loaded modules now this is extended to work for all modules available in the code path. The completion is also extended to work inside the "help" functions h, ht and hcb. You can for example press tab like the example below and get all modules beginning with `l`:
 ```
 5> h(l
 lcnt                      leex                      lists                     
@@ -159,7 +159,7 @@ splitwith/2  sublist/2    sublist/3    subtract/2   suffix/2     sum/1
 ## Take CPU quotas into account
 CPU quotas are now taken into account when deciding the default number of online schedulers.
 
-Thus, improving performance in container environments where quotas are applied, such as docker with the `--cpus` flag.
+Thus, automatically making Erlang a good citizen in container environments where quotas are applied, such as docker with the `--cpus` flag.
 
 ## EPMD independence
 We have improved the handshake during connection setup in the Erlang distribution protocol.
