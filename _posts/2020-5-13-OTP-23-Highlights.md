@@ -25,10 +25,10 @@ In OTP 23 we have added some new features to the language and compiler, one has 
 ## Matching syntax improvements​
 
 ### Binary matching
-In binary matching, the size of the segment to be matched is now allowed to be a guard expression. In the example below the variable Size is bound to the first 8 bits and then it is used in an expression (Size-1)*8 for the size of the following binary.​
+In binary matching, the size of the segment to be matched is now allowed to be a guard expression. In the example below the variable Size is bound to the first 8 bits and then it is used in an expression (Size-1)8 for the size of the following binary.
 ```erlang
 example1(<<Size:8,Payload:((Size-1)*8)/binary,Rest/binary>>) ->​
-    {Payload,Rest}.​
+    {Payload,Rest}.
 ```
 
 ### Matching on maps
@@ -37,56 +37,56 @@ In the current map matching syntax, the key in a map pattern must be a single va
 With OTP 23 the keys in map matching can be guard expressions as you see in example2.​
 
 The only limitation is that all variables used in a key expression must be previously bound. ​
-```erlang​
-example2(M, X) -> ​
-    Key = {tag,X},​
-    #{Key := Value} = M,​
-    Value.​
+```erlang
+example2(M, X) ->
+    Key = {tag,X},
+    #{Key := Value} = M,
+    Value.
 ```
 Below there is an illegal example showing that it is still not supported to use an unbound variable as part of the expression for the key-pattern. In this case Key is not bound and the requirement is that all variables used in a key expression must be previously bound. 
-```erlang ​
-illegal_example(Key, #{Key := Value}) -> Value.​
+```erlang
+illegal_example(Key, #{Key := Value}) -> Value.
 ```
 
-## Numeric literals with underscore​
+## Numeric literals with underscore
 It is now allowed to write numeric literals with underscore between the digits for the purpose of readability. But the placement of the underscores is not totally free there are som rules. See example of allowed use below:
 
 ```
-305441741123_456​
-1_2_3_4_5​
-123_456.789_123​
-1.0e1_23​
-16#DEAD_BEEF​
-2#1100_1010_0011​
+305441741123_456
+1_2_3_4_5
+123_456.789_123
+1.0e1_23
+16#DEAD_BEEF
+2#1100_1010_0011
 ```
 And in the following example we have some examples of dissalowed placement of the underscore:
 
 ```
-_123  % variable name​
-123_​
-123__456  % only single ‘_’​
-123_.456​
-123._456​
-16#_1234​
-16#1234_​
+_123  % variable name
+123_
+123__456  % only single ‘_’
+123_.456
+123._456
+16#_1234
+16#1234_
 ```
 # Distributed spawn and the new erpc module
 ## Improved spawn
-We have improved the scalability and performance of the spawn operation.​
+We have improved the scalability and performance of the spawn operation.
 
-Also added new features, such a distributed `spawn_monitor()` BIF. This function creates a new process and sets up a monitor atomically.​
+Also added new features, such a distributed `spawn_monitor()` BIF. This function creates a new process and sets up a monitor atomically.
 
-The `spawn_opt()` BIF will support the monitor option for setting up a monitor atomically while creating a process.​
+The `spawn_opt()` BIF will support the monitor option for setting up a monitor atomically while creating a process.
 
-We’ve added new `spawn_request()` BIFs for asynchronous spawning of processes. ​
+We’ve added new `spawn_request()` BIFs for asynchronous spawning of processes.
 `spawn_request()` supports all options that `spawn_opt()` already supports.
 
 ## New module erpc
-The `erpc` module implements an enhanced subset of the operations provided by the rpc module.​
+The `erpc` module implements an enhanced subset of the operations provided by the rpc module.
 
 Enhanced in the sense that it makes it possible to distinguish between returned value, raised exceptions, and other errors.​
 
-`erpc` also has better performance and scalability than the original rpc implementation. This by utilizing the newly introduced `spawn_request()` BIF.​
+`erpc` also has better performance and scalability than the original rpc implementation. This by utilizing the newly introduced `spawn_request()` BIF.
 
 # gen_tcp and the new socket module
 
@@ -98,26 +98,26 @@ MORE TO WRITE
 
 ```
 # Help in the shell
-- We have implemented EEP 48. EEP 48 proposes an official API documentation storage to be used by BEAM languages. By standardizing how API documentation is stored, it will be possible to write tools that work across languages.​
+- We have implemented EEP 48. EEP 48 proposes an official API documentation storage to be used by BEAM languages. By standardizing how API documentation is stored, it will be possible to write tools that work across languages.
 
-- We’ve extended the ordinary doc build with the generation .chunk files for all OTP modules.​
+- We’ve extended the ordinary doc build with the generation .chunk files for all OTP modules.
 
-- Built on these new features we’ve added on-line help in the shell.​
+- Built on these new features we’ve added on-line help in the shell.
 
-- We’ve added a new module shell_docs with functions for rendering documentation for a shell. This can be used for instance by LSP implementations.​
+- We’ve added a new module shell_docs with functions for rendering documentation for a shell. This can be used for instance by LSP implementations.
 
-- The code module also got a new function, get_doc which returns the doc chunk without loading the module.​
+- The code module also got a new function, get_doc which returns the doc chunk without loading the module.
 
-​EEP 48: Documentation storage and format​
+EEP 48: Documentation storage and format
 
-Doc build generates .chunk files for all OTP​
+Doc build generates .chunk files for all OTP
 
-On-line help in the shell​
-h(Module), h(Module,Function), h(Module,Function,Arity)​
+On-line help in the shell
+h(Module), h(Module,Function), h(Module,Function,Arity)
 
-New module shell_docs in stdlib with functions `render/1,2,3`​
+New module shell_docs in stdlib with functions `render/1,2,3`
 
-New function code:get_doc(Module) which returns the doc chunk without loading the module.​
+New function code:get_doc(Module) which returns the doc chunk without loading the module.
 ```
 4> h(lists,sort,2).
 
@@ -135,7 +135,7 @@ New function code:get_doc(Module) which returns the doc chunk without loading th
 ok
 ```
 ## Improved tab-completion
-The tab-completion in the shell is also improved. Previously the tab-completion for modules did only work for already loaded modules now this is extended to work for all modules available in the code path. The completion is also extended to work inside the "help" functions h, ht and hc. You can for example press tab like the example below and get all modules beginning with `l`:​
+The tab-completion in the shell is also improved. Previously the tab-completion for modules did only work for already loaded modules now this is extended to work for all modules available in the code path. The completion is also extended to work inside the "help" functions h, ht and hc. You can for example press tab like the example below and get all modules beginning with `l`:
 ```
 5> h(l
 lcnt                      leex                      lists                     
@@ -157,29 +157,28 @@ splitwith/2  sublist/2    sublist/3    subtract/2   suffix/2     sum/1
 # "Container friendly" features
 
 ## Take CPU quotas into account
-CPU quotas are now taken into account when deciding the default number of online schedulers.​
+CPU quotas are now taken into account when deciding the default number of online schedulers.
 
-Thus, improving performance in container environments where quotas are applied, such as docker with the `--cpus` flag.​
+Thus, improving performance in container environments where quotas are applied, such as docker with the `--cpus` flag.
 
 ## EPMD independence
-We have improved the handshake during connection setup in the Erlang distribution protocol.​
-It is now possible to agree on protocol version without depending on epmd or other prior knowledge of peer node version. ​
-(makes it independent on EPMD)​
-The possibility to run Erlang distribution without​ relying on EPMD has been extended. To achieve this a​ couple of new options to the inet distribution has been​ added.​
-​
-- `-dist_listen false` Setup the distribution​ channel, but do not listen for incoming connection.​ This is useful when you want to use the current node to​ interact with another node on the same machine without​ it joining the entire cluster.​
-​
-- `-erl_epmd_port Port` Configure a default port that​ the built-in EPMD client should return. This allows the​ local node to know the port to connect to for any other​ node in the cluster.​
-​
-The `erl_epmd` callback API has also been extended to​ allow returning -1 as the creation which means that a​ random creation will be created by the node.​
-​
-In addition a new callback function called​
-listen_port_please has been added that allows the​ callback to return which listen port the distribution​ should use. This can be used instead of​ `inet_dist_listen_min/max` if the listen port is to be​ fetched from an external service.​
+We have improved the handshake during connection setup in the Erlang distribution protocol.
+It is now possible to agree on protocol version without depending on epmd or other prior knowledge of peer node version.
+(makes it independent on EPMD)
+The possibility to run Erlang distribution without relying on EPMD has been extended. To achieve this a couple of new options to the inet distribution has been added.
+
+- `-dist_listen false` Setup the distribution channel, but do not listen for incoming connection. This is useful when you want to use the current node to interact with another node on the same machine without it joining the entire cluster.
+
+- `-erl_epmd_port Port` Configure a default port that the built-in EPMD client should return. This allows the local node to know the port to connect to for any other node in the cluster.
+
+The `erl_epmd` callback API has also been extended to allow returning -1 as the creation which means that a random creation will be created by the node.
+
+In addition a new callback function called
+listen_port_please has been added that allows the callback to return which listen port the distribution should use. This can be used instead of `inet_dist_listen_min/max` if the listen port is to be fetched from an external service.
 
 ## New option for `erl_call`
-`erl_call` got a new `address` option, that can be used to connect directly to a node  without being dependent on epmd to resolve the node name.​
+`erl_call` got a new `address` option, that can be used to connect directly to a node  without being dependent on epmd to resolve the node name.
 
-…​
 ```
 MORE TO WRITE
 
@@ -187,10 +186,10 @@ MORE TO WRITE
 
 ```
 # TLS enhancements and changes
-The SSL application got new TLS 1.3 features.​
+The SSL application got new TLS 1.3 features.
 
-Also we have removed support for SSLv3!​
-​
+Also we have removed support for SSLv3!
+
 # SSH
 Two notable SSH features were provided as Pull Requests from open source users, namely support for fetching keys from ssh-agents and TCP/IP port forwarding.  Port forwarding is sometimes called tunneling or tcp-forward/direct-tcp. In the OpenSSH client, port forwarding corresponds to the options -L and -R.
 
@@ -202,8 +201,8 @@ The SSH application can now be configured in an Erlang config-file. This gives t
 # CRYPTO
 A new crypto API was introduced in OTP-22.0.  The main reason for a new API was to use the OpenSSL libcrypto EVP API that enables HW acceleration, if the machine supports it.  The naming of crypto algorithms is also systemized and now follows the schema in OpenSSL.
 
-There are parts of the CRYPTO app that are using very old APIs while other parts are using the latest one. ​
-It turned out that using the old API in the new way, and still keeping it backwards compatible, was not possible. ​
+There are parts of the CRYPTO app that are using very old APIs while other parts are using the latest one.
+It turned out that using the old API in the new way, and still keeping it backwards compatible, was not possible.
 
-Therefore the old api is kept for now but it is implemented with new primitives.​
-The Old API is deprecated in OTP-23.0 and will be removed in OTP-24.0.​
+Therefore the old api is kept for now but it is implemented with new primitives.
+The Old API is deprecated in OTP-23.0 and will be removed in OTP-24.0.
