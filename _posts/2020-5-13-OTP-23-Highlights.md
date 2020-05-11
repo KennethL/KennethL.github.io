@@ -171,6 +171,14 @@ The possibility to run Erlang distribution without relying on EPMD has been exte
 
 - `-erl_epmd_port Port` Configure a default port that the built-in EPMD client should return. This allows the local node to know the port to connect to for any other node in the cluster.
 
+- `-remsh Node` Starts Erlang with a remote shell connected to Node.
+    If no -name or -sname is given the node will be started using `-sname undefined`. 
+    If Node is using long names then you should give `-name undefined`.
+    If Node does not contain a hostname, one is automatically taken from `-name` or `-sname`
+    **Note**
+    Before OTP-23 the user needed to supply a valid `-sname` or `-name` for `-remsh` to work. 
+    This is still the case if the target node is not running OTP-23 or later.
+
 The `erl_epmd` callback API has also been extended to allow returning -1 as the creation which means that a random creation will be created by the node.
 
 In addition a new callback function called
