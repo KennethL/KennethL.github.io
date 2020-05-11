@@ -100,7 +100,7 @@ MORE TO WRITE
 # Help in the shell
 - We have implemented EEP 48. EEP 48 proposes an official API documentation storage to be used by BEAM languages. By standardizing how API documentation is stored, it will be possible to write tools that work across languages.
 
-- We’ve extended the ordinary doc build with the generation .chunk files for all OTP modules. After the ordinary build of code you can run `make docs DOC_TARGETS=chunks` to build only the EEP 48 chunks for all OTP modules with public APIs. Of course you can build the documentation in all formats as well (html, man, pdf, chunks) by just calling `make docs` withous setting the DOC_TARGETS variable.
+- We’ve extended the ordinary doc build with the generation .chunk files for all OTP modules. You can run `make docs DOC_TARGETS=chunks` to build only the EEP 48 chunks. Running just `make docs` without setting the DOC_TARGETS variable will build all formats (html, man, pdf, chunks).
 
 - Built on these new features we’ve added on-line help in the shell.
 
