@@ -80,10 +80,9 @@ New features are also added, such as a distributed `spawn_monitor()` BIF. This f
 
 The `spawn_opt()` BIF will also support the monitor option for setting up a monitor atomically while creating a process on another node.
 
-We’ve also added new `spawn_request()` BIFs for asynchronous spawning of processes.
+We’ve also added new [`spawn_request()`](http://erlang.org/doc/man/erlang.html#spawn_request-1) BIFs for asynchronous spawning of processes.
 `spawn_request()` supports all options that `spawn_opt()` already supports.
 
-## New module erpc
 
 The spawn inmprovements described above can also be used to optimize and improve many of the functions in the `rpc`module but since the new functions will not be 100% compatible we decided to introduce a new module `erpc` and will keep the old `rpc`as well.
 The `erpc` module implements an enhanced subset of the operations provided by the `rpc` module.
@@ -116,7 +115,7 @@ ERL_FLAGS="-kernel inet_backend socket"
 ```
 
 # Help in the shell
-We have implemented EEP 48 which specifies a storage format for API documentation to be used by BEAM languages. By standardizing how API documentation is stored, it will be possible to write tools that work across languages.
+We have implemented [EEP 48](http://erlang.org/eeps/eep-0048.html) which specifies a storage format for API documentation to be used by BEAM languages. By standardizing how API documentation is stored, it will be possible to write tools that work across languages.
 
 The ordinary doc build is extended with the generation of `.chunk` files for all OTP modules. You can run `make docs DOC_TARGETS=chunks` to build only the EEP 48 chunks. Running just `make docs` without setting the DOC_TARGETS variable will build all formats (html, man, pdf, chunks).
 
@@ -188,8 +187,6 @@ Another feature introduced together with the new handshake is the dynamic node n
 These options
 makes the Erlang runtime system into a distributed node. These flags invokes all network servers necessary for a node to become distributed; see `net_kernel`. It is also ensured that `epmd` runs on the current host before Erlang is started; see epmd and the `-start_epmd` option.
 
-The node name will be `Name@Host`, where `Host` is the fully qualified host name of the current host. For short names, use flag `-sname` instead.
-
 **The new feature in OTP 23** is that 
 `Name` can be set to `undefined` and then the node will be started in a special mode optimized to be the **temporary client** of another node. When enabled the node will request a dynamic node name from the first node it connects to. In addition these distribution settings will be set:
 ```
@@ -213,24 +210,41 @@ The possibility to run Erlang distribution without relying on EPMD has been exte
     Before OTP-23 the user needed to supply a valid `-sname` or `-name` for `-remsh` to work. 
     This is still the case if the target node is not running OTP-23 or later.
 
+```bash
+# starting the E-node test
+erl -sname test@localhost 
+
+# starting a temporary E-node (with dynamic name) as a remote shell to
+# the node test
+erl -remsh test@localhost 
+```
+
 The `erl_epmd` callback API has also been extended to allow returning -1 as the creation which means that a random creation will be created by the node.
 
 In addition a new callback function called
 `listen_port_please` has been added that allows the callback to return which listen port the distribution should use. This can be used instead of `inet_dist_listen_min/max` if the listen port is to be fetched from an external service.
 
 ## New option for `erl_call`
-`erl_call` got a new `address` option, that can be used to connect directly to a node  without being dependent on epmd to resolve the node name.
 
-```
-MORE TO WRITE
+`erl_call` is a C program originally bundled as an example inside the `erl_interface` application.
+`erl_interface` contains C-libraries for communicating with Erlang nodes and letting C programs behave as if they are Erlang nodes. They are then called C nodes. erl_call has become popular and is used in product mainly for administration of an Erlang node on the same host. In OTP 23 `erl_call` is installed under the same path as erl making it automatically in the path without bothering on the `erl_interface` version. 
+Another new thing in `erl_call` is the `address` option, that can be used to connect directly to a node  without being dependent on `epmd` to resolve the node name.
 
+AFAIK `erl_call` is being used in the upcoming version of relx (used by rebar3) for the node_tool function.
 
-
-```
 # TLS enhancements and changes
-The SSL application got new TLS 1.3 features.
+TLS-1.3 is now supported but not yet feature complete. 
+Key features supported are:
+- session tickets
+- updating of session keys
+- RSASSA-PSS signatures
+- Middlebox compatibility.  
 
-Also we have removed support for SSLv3!
+The early data feature is not yet supported. 
+
+A new option `exclusive` is provided for `ssl:cipher_suites/2,3` and `ssl:versions` is extended to better reflect what versions of TLS that are available for the current  setup of Erlang/OTP.
+
+Also note that we have removed support for the legacy TLS version SSL-3.0.
 
 # SSH
 Two notable SSH features were provided as Pull Requests from open source users, namely support for fetching keys from ssh-agents and TCP/IP port forwarding.  Port forwarding is sometimes called tunneling or tcp-forward/direct-tcp. In the OpenSSH client, port forwarding corresponds to the options -L and -R.
@@ -240,7 +254,7 @@ Ssh agent stored keys improves the security while port forwarding is often used 
 The SSH application can now be configured in an Erlang config-file. This gives the possibility to for example change the supported algorithm set without code change.
 
 
-# CRYPTO
+# Crypto
 A new crypto API was introduced in OTP-22.0.  The main reason for a new API was to use the OpenSSL libcrypto EVP API that enables HW acceleration, if the machine supports it.  The naming of crypto algorithms is also systemized and now follows the schema in OpenSSL.
 
 There are parts of the CRYPTO app that are using very old APIs while other parts are using the latest one.
