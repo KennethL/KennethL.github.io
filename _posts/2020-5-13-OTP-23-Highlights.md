@@ -179,9 +179,12 @@ CPU quotas are now taken into account when deciding the default number of online
 Thus, automatically making Erlang a good citizen in container environments where quotas are applied, such as docker with the `--cpus` flag.
 
 ## EPMD independence
+
+In a cloud and container based environment it might be interesting to run distributed Erlang nodes without use of `epmd` and use a hard coded port or an alternative service discovery. Because of this we introduce ways to make it easier to start and configure systems without `epmd`.
+
+### Handshake
 We have improved the handshake during connection setup in the Erlang distribution protocol.
-It is now possible to agree on protocol version without depending on epmd or other prior knowledge of peer node version.
-(makes it independent on EPMD)
+It is now possible to agree on protocol version without depending on `epmd` or other prior knowledge of peer node version.
 
 ### Dynamic node name
 
@@ -191,7 +194,7 @@ These options
 makes the Erlang runtime system into a distributed node. These flags invokes all network servers necessary for a node to become distributed; see `net_kernel`. It is also ensured that `epmd` runs on the current host before Erlang is started; see epmd and the `-start_epmd` option.
 
 **The new feature in OTP 23** is that 
-`Name` can be set to `undefined` and then the node will be started in a special mode optimized to be the **temporary client** of another node. When enabled the node will request a dynamic node name from the first node it connects to. In addition these distribution settings will be set:
+`Name` can be set to `undefined` and then the node will be started in a special mode optimized to be the **temporary client** of another node. When enabled the node will request a dynamic node name from the first node it connects to. In addition these distribution settings will be implied:
 ```
 erl -dist_listen false -hidden -dist_auto_connect never
 ```
@@ -200,7 +203,9 @@ Because `-dist_auto_connect` is set to `never`, the system will have to manually
 **Note!**
 The dynamic node name feature is supported from OTP 23. Both the temporary client node and the first connected peer node (supplying the dynamic node name) must be at least OTP 23 for it to work.
 
-The possibility to run Erlang distribution without relying on EPMD has been extended. To achieve this a couple of new options to the inet distribution has been added.
+### New options to control the use of `epmd` 
+
+To give the user more control over the use of `epmd` some new options to the inet distribution has been added.
 
 - `-dist_listen false` Setup the distribution channel, but do not listen for incoming connection. This is useful when you want to use the current node to interact with another node on the same machine without it joining the entire cluster.
 
@@ -231,7 +236,7 @@ In addition a new callback function called
 ## New option for `erl_call`
 
 `erl_call` is a C program originally bundled as an example inside the `erl_interface` application.
-`erl_interface` contains C-libraries for communicating with Erlang nodes and letting C programs behave as if they are Erlang nodes. They are then called C nodes. erl_call has become popular and is used in product mainly for administration of an Erlang node on the same host. In OTP 23 `erl_call` is installed under the same path as erl making it automatically in the path without bothering on the `erl_interface` version. 
+`erl_interface` contains C-libraries for communicating with Erlang nodes and letting C programs behave as if they are Erlang nodes. They are then called C nodes. `erl_call` has become popular and is used in products mainly for administration of an Erlang node on the same host. In OTP 23 `erl_call` is installed under the same path as `erl` making available in the path without bothering about the `erl_interface` version. 
 Another new thing in `erl_call` is the `address` option, that can be used to connect directly to a node  without being dependent on `epmd` to resolve the node name.
 
 AFAIK `erl_call` is being used in the upcoming version of relx (used by rebar3) for the node_tool function.
@@ -263,8 +268,8 @@ The SSH application can now be configured in an Erlang config-file. This gives t
 # Crypto
 A new crypto API was introduced in OTP-22.0.  The main reason for a new API was to use the OpenSSL libcrypto EVP API that enables HW acceleration, if the machine supports it.  The naming of crypto algorithms is also systemized and now follows the schema in OpenSSL.
 
-There are parts of the CRYPTO app that are using very old APIs while other parts are using the latest one.
+There are parts of the Crypto app that are using very old APIs while other parts are using the latest one.
 It turned out that using the old API in the new way, and still keeping it backwards compatible, was not possible.
 
-Therefore the old api is kept for now but it is implemented with new primitives.
+Therefore the old API is kept for now but it is implemented with new primitives.
 The Old API is deprecated in OTP-23.0 and will be removed in OTP-24.0.
