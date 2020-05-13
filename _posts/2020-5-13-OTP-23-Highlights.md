@@ -108,8 +108,13 @@ The pictures below illustrate the old and the new implementation of rpc:call() a
 
 "old" rpc:call implementation:
 ![old rpc illustration](../images/rpc1.png)
+
 new rcp:call implementation with support in the distribution protocol (spawn request)
 ![new rpc illustration](../images/rpc2.png)
+
+As you can see in the "old" implementation above the `rpc:call` relies on the `rex` process on the receiving node to spawn a temporary process to execute the called function. This will make ex`to a bottleneck if there are many simultaneous `rpc:calls` towards the node. 
+
+The new solution does not use `rex` at all and let the spawned process decode the arguments of the call thus avoiding some unnecessary copying of data that occurs in the "old" implementation.
 
 # gen_tcp and the new socket module
 
