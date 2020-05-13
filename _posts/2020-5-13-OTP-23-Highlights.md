@@ -34,7 +34,7 @@ example1(<<Size:8,Payload:((Size-1)*8)/binary,Rest/binary>>) ->​
 ### Matching on maps
 In the current map matching syntax, the key in a map pattern must be a single value or a literal. This leads to unnatural code if the keys in a map are complex terms.​
 
-With OTP 23 the keys in map matching can be guard expressions as you see in example2.​
+With OTP 23 the keys in map matching can be guard expressions as you see in new_example2.​
 
 The only limitation is that all variables used in a key expression must be previously bound. 
 
@@ -48,8 +48,8 @@ example2(M, X) ->
 ```
 And now you can do like this:
 ```erlang
-example2(M, X) ->​
-    #{{tag,X} := Value} = M,​
+new_example2(M, X) ->​
+    #{ {tag,X} := Value} = M,​
     Value.​
 ```
 
@@ -103,6 +103,13 @@ Enhanced in the sense that it makes it possible to distinguish between returned 
 `erpc` also has better performance and scalability than the original `rpc` implementation. This by utilizing the newly introduced `spawn_request()` BIF.
 
 The `rpc`module now share the same implementation as `erpc` and by that users of `rpc` will automatically benefit from the performance and scalability improvements made in `erpc`.
+
+The pictures below illustrate the old and the new implementation of rpc:call() and shows why the new one is more efficient and scalable.
+
+"old" rpc:call implementation:
+![old rpc illustration](../images/rpc1.png)
+new rcp:call implementation with support in the distribution protocol (spawn request)
+![new rpc illustration](../images/rpc2.png)
 
 # gen_tcp and the new socket module
 
