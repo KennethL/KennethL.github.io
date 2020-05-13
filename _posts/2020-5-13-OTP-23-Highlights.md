@@ -71,7 +71,7 @@ _123  % variable name
 16#1234_
 ```
 
-# Distributed spawn and the new erpc module
+# Distributed spawn and the new `erpc` module
 ## Improved spawn
 
 The spawn operation is improved regarding scalability and performance for the distributed case. That is when spawning a process on another node. 
@@ -85,11 +85,14 @@ We’ve also added new [`spawn_request()`](http://erlang.org/doc/man/erlang.html
 
 
 The spawn inmprovements described above can also be used to optimize and improve many of the functions in the `rpc`module but since the new functions will not be 100% compatible we decided to introduce a new module `erpc` and will keep the old `rpc`as well.
+
 The `erpc` module implements an enhanced subset of the operations provided by the `rpc` module.
 
 Enhanced in the sense that it makes it possible to distinguish between returned value, raised exceptions, and other errors.​
 
 `erpc` also has better performance and scalability than the original `rpc` implementation. This by utilizing the newly introduced `spawn_request()` BIF.
+
+The `rpc`module now share the same implementation as `erpc` and by that users of `rpc` will automatically benefit from the performance and scalability improvements made in `erpc`.
 
 # gen_tcp and the new socket module
 
@@ -233,14 +236,16 @@ Another new thing in `erl_call` is the `address` option, that can be used to con
 AFAIK `erl_call` is being used in the upcoming version of relx (used by rebar3) for the node_tool function.
 
 # TLS enhancements and changes
-TLS-1.3 is now supported but not yet feature complete. 
+TLS-1.3 is now supported (in OTP 22 we classed it as experimental) but not yet feature complete. 
 Key features supported are:
 - session tickets
-- updating of session keys
+- refreshing of session keys
 - RSASSA-PSS signatures
 - Middlebox compatibility.  
 
-The early data feature is not yet supported. 
+The "early data" feature is not yet supported. Early data is an optimization introduced in TLS 1.3 which allows a client to send data to a server in the first round trip of a connection, without waiting for the TLS handshake to complete if the client has spoken to the same server recently.
+
+In OTP 23 TLS 1.3 is per default announced as the preferred protocol version by both client and server. Users who are not explicitly configuring the TLS versions should be aware of this since it can have impact on interoperability.  
 
 A new option `exclusive` is provided for `ssl:cipher_suites/2,3` and `ssl:versions` is extended to better reflect what versions of TLS that are available for the current  setup of Erlang/OTP.
 
