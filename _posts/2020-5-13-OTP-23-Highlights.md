@@ -8,7 +8,7 @@ author: Kenneth Lundin
 OTP 23 has just been released (May 13:th 2020).
 It has been a long process with three release
 candidates in February, March and April before the final release.
-We are very thankful for the feedback we have got from the release candidates,
+We are very thankful for the feedback we have got regarding the release candidates,
 which has revealed some bugs and flaws that our internal testing did not find.
 
 This blog post will describe some highlights of what is new in OTP 23.
@@ -49,7 +49,7 @@ illegal_example(Key, #{Key := Value}) -> Value.
 ```
 
 ## Numeric literals with underscore
-It is now allowed to write numeric literals with underscore between the digits for the purpose of readability. But the placement of the underscores is not totally free there are som rules. See example of allowed use below:
+It is now allowed to write numeric literals with underscore between the digits for the purpose of readability. But the placement of the underscores is not totally free there are some rules. See example of allowed use below:
 
 ```
 305441741123_456
@@ -59,7 +59,7 @@ It is now allowed to write numeric literals with underscore between the digits f
 16#DEAD_BEEF
 2#1100_1010_0011
 ```
-And in the following example we have some examples of dissalowed placement of the underscore:
+And in the following example we have some examples of disallowed placement of the underscore:
 
 ```
 _123  % variable name
@@ -80,11 +80,11 @@ New features are also added, such as a distributed `spawn_monitor()` BIF. This f
 
 The `spawn_opt()` BIF will also support the monitor option for setting up a monitor atomically while creating a process on another node.
 
-We’ve also added new [`spawn_request()`](http://erlang.org/doc/man/erlang.html#spawn_request-1) BIFs for asynchronous spawning of processes.
+We have also added new [`spawn_request()`](http://erlang.org/doc/man/erlang.html#spawn_request-1) BIFs for asynchronous spawning of processes.
 `spawn_request()` supports all options that `spawn_opt()` already supports.
 
 
-The spawn inmprovements described above can also be used to optimize and improve many of the functions in the `rpc`module but since the new functions will not be 100% compatible we decided to introduce a new module `erpc` and will keep the old `rpc`as well.
+The spawn improvements described above can also be used to optimize and improve many of the functions in the `rpc` module but since the new functions will not be 100% compatible we decided to introduce a new module named `erpc` and will keep the old `rpc` module as well.
 
 The `erpc` module implements an enhanced subset of the operations provided by the `rpc` module.
 
@@ -164,7 +164,7 @@ logger_proxy              logger_server             logger_simple_h
 logger_std_h              
 logger_sup
 ```
-Or complete all functions beginning with `s` in the `lists`module like this:
+Or complete all functions beginning with `s` in the `lists` module like this:
 ```
 5> h(lists,s
 search/2     seq/2        seq/3        sort/1       sort/2       split/2      
@@ -185,7 +185,7 @@ It is now possible to agree on protocol version without depending on epmd or oth
 
 ### Dynamic node name
 
-Another feature introduced together with the new handshake is the dynamic node name. A dynamic node name is choosen by using the options `-name Name` or `-sname Name` and setting `Name` to `undefined`.
+Another feature introduced together with the new handshake is the dynamic node name. A dynamic node name is chosen by using the options `-name Name` or `-sname Name` and setting `Name` to `undefined`.
 
 These options
 makes the Erlang runtime system into a distributed node. These flags invokes all network servers necessary for a node to become distributed; see `net_kernel`. It is also ensured that `epmd` runs on the current host before Erlang is started; see epmd and the `-start_epmd` option.
@@ -208,7 +208,8 @@ The possibility to run Erlang distribution without relying on EPMD has been exte
 - `-remsh Node` Starts Erlang with a remote shell connected to `Node`.
     If no `-name` or `-sname` is given the node will be started using `-sname undefined`. 
     If Node is using long names then you should give `-name undefined`.
-    If `Node` does not contain a hostname, one is automatically taken from `-name` or `-sname`
+    If `Node` does not contain a hostname, one is automatically taken from the `-name` or `-sname` option.
+
     **Note**
     Before OTP-23 the user needed to supply a valid `-sname` or `-name` for `-remsh` to work. 
     This is still the case if the target node is not running OTP-23 or later.
@@ -254,7 +255,7 @@ Also note that we have removed support for the legacy TLS version SSL-3.0.
 # SSH
 Two notable SSH features were provided as Pull Requests from open source users, namely support for fetching keys from ssh-agents and TCP/IP port forwarding.  Port forwarding is sometimes called tunneling or tcp-forward/direct-tcp. In the OpenSSH client, port forwarding corresponds to the options -L and -R.
 
-Ssh agent stored keys improves the security while port forwarding is often used to get an encrypted tunnel between two hosts. In the area of key handling, the default key plugin ssh_file.erl is rewritten and extended with OpenSSH file format "openssh-key-v1".  A limitation so far is that keys in the new format can't be encrypted The default plugin now also uses port numbers which increases the security.
+Ssh agent stored keys improves the security while port forwarding is often used to get an encrypted tunnel between two hosts. In the area of key handling, the default key plugin ssh_file.erl is rewritten and extended with OpenSSH file format "openssh-key-v1".  A limitation so far is that keys in the new format cannot be encrypted The default plugin now also uses port numbers which increases the security.
 
 The SSH application can now be configured in an Erlang config-file. This gives the possibility to for example change the supported algorithm set without code change.
 
