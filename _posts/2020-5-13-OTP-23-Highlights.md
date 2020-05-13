@@ -36,12 +36,20 @@ In the current map matching syntax, the key in a map pattern must be a single va
 
 With OTP 23 the keys in map matching can be guard expressions as you see in example2.​
 
-The only limitation is that all variables used in a key expression must be previously bound. ​
+The only limitation is that all variables used in a key expression must be previously bound. 
+
+Previously you had to do like this:
 ```erlang
 example2(M, X) ->
     Key = {tag,X},
     #{Key := Value} = M,
     Value.
+```
+And now you can do like this:
+```erlang
+example2(M, X) ->​
+    #{{tag,X} := Value} = M,​
+    Value.​
 ```
 Below there is an illegal example showing that it is still not supported to use an unbound variable as part of the expression for the key-pattern. In this case Key is not bound and the requirement is that all variables used in a key expression must be previously bound. 
 ```erlang
