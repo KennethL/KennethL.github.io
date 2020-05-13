@@ -100,13 +100,13 @@ In OTP 22 we introduced the new experimental [socket](http://erlang.org/doc/man/
 The idea behind this API is to have a stable intermediary API that can be used
 to create features that are not part of the higher-level `gen_*` APIs. 
 
-We have now come one step further in our plan to replace the inet driver by making it possible to use the `gen_tcp` API with `socket` as an optional backend.
+We have now come one step further in our plan to replace the inet driver by making it possible to use the `gen_tcp` API with `socket` as an optional back-end.
 
 To make it easy to test with existing code using `gen_tcp` a new option `{inet_backend, socket | inet}` can be used to select the `socket` implementation instead of the default `inet` implementation. This option must be put first in the option list to the functions: `gen_tcp:listen`, `gen_tcp:connect` and `gen_tcp:fdopen`, which are all functions that create a socket. For example like this:
 ```erlang
 {ok,Socket} = gen_tcp:connect(Addr,Port,[{inet_backend,socket}|OtherOpts])
 ```
-The returned `Socket` is a tuple with a $something tag instead of a port, so all other API functions will use the right implementation for the socket.
+The returned `Socket` is a `'$inet'` tagged 3-tuple instead of a port, so all other API functions will use the right implementation for the socket.
  
 A more general override is to use the Kernel configuration variable `inet_backend` and set it to `socket` or `inet`.  For example on the `erl` command-line as 
 ```
@@ -255,7 +255,7 @@ Also note that we have removed support for the legacy TLS version SSL-3.0.
 # SSH
 Two notable SSH features were provided as Pull Requests from open source users, namely support for fetching keys from ssh-agents and TCP/IP port forwarding.  Port forwarding is sometimes called tunneling or tcp-forward/direct-tcp. In the OpenSSH client, port forwarding corresponds to the options -L and -R.
 
-Ssh agent stored keys improves the security while port forwarding is often used to get an encrypted tunnel between two hosts. In the area of key handling, the default key plugin ssh_file.erl is rewritten and extended with OpenSSH file format "openssh-key-v1".  A limitation so far is that keys in the new format cannot be encrypted The default plugin now also uses port numbers which increases the security.
+Ssh agent stored keys improves the security while port forwarding is often used to get an encrypted tunnel between two hosts. In the area of key handling, the default key plugin `ssh_file.erl` is rewritten and extended with OpenSSH file format "openssh-key-v1".  A limitation so far is that keys in the new format cannot be encrypted The default plugin now also uses port numbers which increases the security.
 
 The SSH application can now be configured in an Erlang config-file. This gives the possibility to for example change the supported algorithm set without code change.
 
